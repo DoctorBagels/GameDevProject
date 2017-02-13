@@ -5,9 +5,21 @@ using UnityEngine;
 public class P1Script : MonoBehaviour
 {
 
-    public Vector3 Velocity = new Vector2(0.2f, 0);
     Rigidbody2D RBP1;
     bool Jumping = false;
+    public static float Vel;
+    public float MaxVel;
+    float JVel;
+    int ChargeCounter;
+    int Cooldown = 0;
+    int EnemyScore;
+    bool Right;
+    bool Left;
+    public static bool Charge;
+    bool LCharge;
+    bool RCharge;
+    bool Hitstun;
+    float SFrames;
 
     void Start()
     {
@@ -16,24 +28,29 @@ public class P1Script : MonoBehaviour
 
     void Update()
     {
+        Movement();
+        Jumps();
+        Charges();
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            Vector3 where = transform.position;
-            where += Velocity;
-            transform.position = where;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            Vector3 where = transform.position;
-            where -= Velocity;
-            transform.position = where;
+        if (Cooldown > 0)
+            Cooldown--;
+        if (ChargeCounter < 0)
+            ChargeCounter = 0;
 
-        }
-        if (Input.GetKey(KeyCode.F) && !Jumping)
+        if (Hitstun)
         {
-            RBP1.AddForce(new Vector2(0, 20), ForceMode2D.Impulse);
-            Jumping = true;
+            SFrames += Time.deltaTime;
+            if (SFrames > .2)
+            {
+                Hitstun = false;
+                SFrames = 0;
+            }
+        }
+
+        if (EnemyScore == 3)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("P2Win");
+            EnemyScore = 0;
         }
 
     }
@@ -42,15 +59,143 @@ public class P1Script : MonoBehaviour
     {
         if (col.name == "Death Plane")
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("OVER");
+            EnemyScore++;
+            transform.position = new Vector3(-6, 0);
         }
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.transform.tag == "Stage")
+        if (col.transform.tag == "Stage" && transform.position.y > -4)
         {
             Jumping = false;
+            JVel = 0;
+        }
+
+        if (col.transform.name == "Player 2")
+        {
+            RBP1.AddForce(new Vector2(70 * P2Script.Vel, 0), ForceMode2D.Impulse);
+            Debug.Log("HitP1");
+            Hitstun = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.transform.tag == "Stage")
+        {
+            Jumping = true;
+        }
+    }
+
+    void Movement()
+    {
+        if (Input.GetKey(KeyCode.D))
+            Right = true;
+        if (Input.GetKey(KeyCode.A))
+            Left = true;
+        if (Input.GetKeyUp(KeyCode.D))
+            Right = false;
+        if (Input.GetKeyUp(KeyCode.A))
+            Left = false;
+
+        if (Hitstun)
+            Vel = 0;
+
+        if (Right && !Hitstun)
+            Vel += .05f;
+        if (Left && !Hitstun)
+            Vel -= .05f;
+        if (!Right && !Left && Vel >= 0 && !Hitstun)
+        {
+            Vel -= .025f;
+            if (Vel < .025f)
+                Vel = 0;
+        }
+        if (!Right && !Left && Vel <= 0 && !Hitstun)
+        {
+            Vel += .025f;
+            if (Vel > -.025f)
+                Vel = 0;
+        }
+
+        if (Vel >= MaxVel)
+            Vel = MaxVel;
+        if (Vel <= -MaxVel)
+            Vel = -MaxVel;
+
+        transform.position += new Vector3(Vel, 0, 0);
+    }
+
+    void Jumps()
+    {
+
+        if (JVel <= -.4f)
+            JVel = -.4f;
+
+        if (Input.GetKeyDown(KeyCode.W) && !Jumping)
+        {
+            JVel = .5f;
+            Jumping = true;
+        }
+
+        if (Jumping)
+        {
+            JVel -= .03f;
+            transform.position += new Vector3(0, JVel, 0);
+        }
+    }
+
+    void Charges()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && Right && !Left && Cooldown == 0 && !RCharge)
+        {
+            RCharge = true;
+            Charge = true;
+            ChargeCounter = 6;
+        }
+
+        if (RCharge)
+        {
+            JVel = 0;
+
+            if (ChargeCounter > 0)
+            {
+                transform.position += new Vector3(.5f, 0, 0);
+                ChargeCounter--;
+            }
+
+            if (ChargeCounter <= 0)
+            {
+                RCharge = false;
+                Charge = false;
+                Cooldown = 60;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && !Right && Left && Cooldown == 0 && !LCharge)
+        {
+            LCharge = true;
+            Charge = true;
+            ChargeCounter = 6;
+        }
+
+        if (LCharge)
+        {
+            JVel = 0;
+
+            if (ChargeCounter > 0)
+            {
+                transform.position += new Vector3(-.5f, 0, 0);
+                ChargeCounter--;
+            }
+
+            if (ChargeCounter <= 0)
+            {
+                LCharge = false;
+                Charge = false;
+                Cooldown = 60;
+            }
         }
     }
 }
