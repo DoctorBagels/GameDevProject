@@ -76,7 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\FrameRate.cs" />
+    <Compile Include="Assets\P1HitboxScript.cs" />
     <Compile Include="Assets\P1Script.cs" />
+    <Compile Include="Assets\P2HitboxScript.cs" />
     <Compile Include="Assets\P2Script.cs" />
     <Compile Include="Assets\Text.cs" />
   </ItemGroup>

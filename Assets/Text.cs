@@ -14,6 +14,8 @@ public class Text : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.R))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("GAME");
+            P1Script.Ded = true;
+            P2Script.Ded = true;
         }
 	}
 }
