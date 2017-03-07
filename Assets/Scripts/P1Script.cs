@@ -187,11 +187,11 @@ public class P1Script : MonoBehaviour
 
     void Charges()
     {
-        if (Input.GetKeyDown(KeyCode.F) && Right && !Left && Cooldown == 0 && !RCharge)
+        if (Input.GetMouseButtonDown(0) && Right && !Left && Cooldown == 0 && !RCharge)
         {
             RCharge = true;
             Charge = true;
-            ChargeCounter = 6;
+            ChargeCounter = 8;
         }
 
         if (RCharge)
@@ -212,11 +212,11 @@ public class P1Script : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && !Right && Left && Cooldown == 0 && !LCharge)
+        if (Input.GetMouseButtonDown(0) && !Right && Left && Cooldown == 0 && !LCharge)
         {
             LCharge = true;
             Charge = true;
-            ChargeCounter = 6;
+            ChargeCounter = 8;
         }
 
         if (LCharge)

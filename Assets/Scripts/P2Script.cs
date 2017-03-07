@@ -190,7 +190,7 @@ public class P2Script : MonoBehaviour
         {
             RCharge = true;
             Charge = true;
-            ChargeCounter = 6;
+            ChargeCounter = 8;
         }
 
         if (RCharge)
@@ -215,7 +215,7 @@ public class P2Script : MonoBehaviour
         {
             LCharge = true;
             Charge = true;
-            ChargeCounter = 6;
+            ChargeCounter = 8;
         }
 
         if (LCharge)

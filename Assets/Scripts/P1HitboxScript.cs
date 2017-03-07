@@ -17,7 +17,7 @@ public class P1HitboxScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.name == "P2Headbox" && !P1Script.Ded && !P2Script.Ded)
+        if (col.name == "P2Headbox" && !P1Script.Ded && !P2Script.Ded && !P1Script.Charge)
         {
             P2Script.EnemyScore++;
             P2Script.Ded = true;

@@ -75,12 +75,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FrameRate.cs" />
-    <Compile Include="Assets\P1HitboxScript.cs" />
-    <Compile Include="Assets\P1Script.cs" />
-    <Compile Include="Assets\P2HitboxScript.cs" />
-    <Compile Include="Assets\P2Script.cs" />
-    <Compile Include="Assets\Text.cs" />
+    <Compile Include="Assets\Scripts\FrameRate.cs" />
+    <Compile Include="Assets\Scripts\P1Counter.cs" />
+    <Compile Include="Assets\Scripts\P1HitboxScript.cs" />
+    <Compile Include="Assets\Scripts\P1Script.cs" />
+    <Compile Include="Assets\Scripts\P2Counter.cs" />
+    <Compile Include="Assets\Scripts\P2HitboxScript.cs" />
+    <Compile Include="Assets\Scripts\P2Script.cs" />
+    <Compile Include="Assets\Scripts\Text.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
