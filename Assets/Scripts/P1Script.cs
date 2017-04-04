@@ -34,6 +34,10 @@ public class P1Script : MonoBehaviour
     public ParticleSystem PrefabAlt;
     public static float XPos;
     public static float YPos;
+    public AudioSource Jumpsound;
+    public AudioSource Clink;
+    public AudioSource Death;
+    public AudioSource Ground;
 
     void Start()
     {
@@ -121,10 +125,12 @@ public class P1Script : MonoBehaviour
     {
         if (col.name == "Death Plane")
         {
+            Camera.main.GetComponent<Screenshake>().Shake();
             Instantiate(PrefabAlt, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
             Instantiate(Prefab, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
             EnemyScore+= .5f;
             Ded = true;
+            Death.Play();
         }
     }
 
@@ -132,6 +138,7 @@ public class P1Script : MonoBehaviour
     {
         if (col.transform.tag == "Stage" && transform.position.y > -4)
         {
+            Ground.Play();
             Jumping = false;
             JVel = 0;
         }
@@ -141,6 +148,7 @@ public class P1Script : MonoBehaviour
             RBP1.AddForce(new Vector2(70 * P2Script.Vel, 0), ForceMode2D.Impulse);
             Debug.Log("HitP1");
             Hitstun = true;
+            Clink.Play();
         }
     }
 
@@ -162,7 +170,7 @@ public class P1Script : MonoBehaviour
             Right = false;
         if (Input.GetKeyUp(KeyCode.A))
             Left = false;
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && !Ded && !Jumping)
             Crouch = true;
         if (Input.GetKeyUp(KeyCode.S))
             Crouch = false;
@@ -208,6 +216,7 @@ public class P1Script : MonoBehaviour
         {
             JVel = .5f;
             Jumping = true;
+            Jumpsound.Play();
         }
 
         if (Jumping)
@@ -219,7 +228,7 @@ public class P1Script : MonoBehaviour
 
     void Charges()
     {
-        if (Input.GetMouseButtonDown(0) && Right && !Left && Cooldown == 0 && !RCharge)
+        if (Input.GetKeyDown(KeyCode.B) && Right && !Left && Cooldown == 0 && !RCharge)
         {
             RCharge = true;
             Charge = true;
@@ -244,7 +253,7 @@ public class P1Script : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && !Right && Left && Cooldown == 0 && !LCharge)
+        if (Input.GetKeyDown(KeyCode.B) && !Right && Left && Cooldown == 0 && !LCharge)
         {
             LCharge = true;
             Charge = true;

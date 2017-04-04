@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\P2Counter.cs" />
     <Compile Include="Assets\Scripts\P2HitboxScript.cs" />
     <Compile Include="Assets\Scripts\P2Script.cs" />
+    <Compile Include="Assets\Scripts\Screenshake.cs" />
     <Compile Include="Assets\Scripts\Text.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

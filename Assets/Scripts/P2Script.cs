@@ -33,6 +33,9 @@ public class P2Script : MonoBehaviour
     public ParticleSystem PrefabAlt;
     public static float XPos;
     public static float YPos;
+    public AudioSource Death;
+    public AudioSource Jumpsound;
+    public AudioSource Ground;
 
     void Start ()
     {
@@ -121,10 +124,12 @@ public class P2Script : MonoBehaviour
     {
         if (col.name == "Death Plane")
         {
+            Camera.main.GetComponent<Screenshake>().Shake();
             Instantiate(PrefabAlt, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
             Instantiate(Prefab, new Vector3(transform.position.x, transform.position.y), Quaternion.identity);
             EnemyScore += .5f;
             Ded = true;
+            Death.Play();
         }
     }
 
@@ -134,6 +139,7 @@ public class P2Script : MonoBehaviour
         {
             Jumping = false;
             JVel = 0;
+            Ground.Play();
         }
 
         if (col.transform.name == "Player 1")
@@ -162,7 +168,7 @@ public class P2Script : MonoBehaviour
             Right = false;
         if (Input.GetKeyUp(KeyCode.LeftArrow))
             Left = false;
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow) && !Jumping && !Ded)
             Crouch = true;
         if (Input.GetKeyUp(KeyCode.DownArrow))
             Crouch = false;
@@ -209,6 +215,7 @@ public class P2Script : MonoBehaviour
         {
             JVel = .5f;
             Jumping = true;
+            Jumpsound.Play();
         }
 
         if (Jumping)

@@ -6,6 +6,7 @@ public class P2HitboxScript : MonoBehaviour
 {
     public ParticleSystem Prefab;
     public ParticleSystem PrefabAlt;
+    public AudioSource Death;
 
 	void Start ()
     {
@@ -21,6 +22,8 @@ public class P2HitboxScript : MonoBehaviour
     {
         if (col.name == "P1Headbox" && !P2Script.Ded && !P1Script.Ded && !P2Script.Charge)
         {
+            Camera.main.GetComponent<Screenshake>().Shake();
+            Death.Play();
             Instantiate(PrefabAlt, new Vector3(P1Script.XPos, P1Script.YPos), Quaternion.identity);
             Instantiate(Prefab, new Vector3(transform.position.x, transform.position.y-.05f), Quaternion.identity);
             P1Script.EnemyScore++;
