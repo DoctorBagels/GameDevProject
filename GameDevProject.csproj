@@ -75,7 +75,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CursorScript.cs" />
     <Compile Include="Assets\Scripts\FrameRate.cs" />
+    <Compile Include="Assets\Scripts\MenuScript.cs" />
     <Compile Include="Assets\Scripts\P1Counter.cs" />
     <Compile Include="Assets\Scripts\P1HitboxScript.cs" />
     <Compile Include="Assets\Scripts\P1Script.cs" />

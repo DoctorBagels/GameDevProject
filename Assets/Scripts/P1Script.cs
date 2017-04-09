@@ -38,6 +38,10 @@ public class P1Script : MonoBehaviour
     public AudioSource Clink;
     public AudioSource Death;
     public AudioSource Ground;
+    int xpos;
+    float cutoff;
+    float Endcount;
+    bool End;
 
     void Start()
     {
@@ -49,6 +53,18 @@ public class P1Script : MonoBehaviour
 
     void Update()
     {
+
+        if (CursorScript.Stage1)
+        {
+            xpos = -6;
+            cutoff = -3.1f;
+        }
+        if (CursorScript.Stage2)
+        {
+            xpos = -8;
+            cutoff = -3.46f;
+        }
+
         Movement();
         Animation();
 
@@ -68,9 +84,9 @@ public class P1Script : MonoBehaviour
                 JVel = 0;
                 DedTime += Time.deltaTime;
             }
-            if (DedTime < 2 && DedTime >= 1)
+            if (DedTime < 2 && DedTime >= 1 && EnemyScore < 5)
             {
-                transform.position = new Vector3(-6, 3);
+                transform.position = new Vector3(xpos, 3);
                 Vel = 0;
                 Jumping = false;
                 JVel = 0;
@@ -100,11 +116,17 @@ public class P1Script : MonoBehaviour
             }
         }
 
-        if (EnemyScore >= 3)
+        if (EnemyScore >= 5)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("P2Win");
-            EnemyScore = 0;
-            P2Script.EnemyScore = 0;
+            Endcount += Time.deltaTime;
+            if (Endcount >= .75)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("P2Win");
+                EnemyScore = 0;
+                P2Script.EnemyScore = 0;
+                Endcount = 0;
+                Time.timeScale = 1.0f;
+            }
         }
 
         if (!Jumping && !Hitstun)
@@ -136,11 +158,18 @@ public class P1Script : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.transform.tag == "Stage" && transform.position.y > -4)
+        if (col.transform.tag == "Stage" && transform.position.y > cutoff)
         {
             Ground.Play();
             Jumping = false;
             JVel = 0;
+        }
+
+        if (col.transform.tag == "LowStage" && transform.position.y > -4)
+        {
+            Jumping = false;
+            JVel = 0;
+            Ground.Play();
         }
 
         if (col.transform.name == "Player 2")
@@ -158,6 +187,9 @@ public class P1Script : MonoBehaviour
         {
             Jumping = true;
         }
+
+        if (col.transform.tag == "LowStage")
+            Jumping = true;
     }
 
     void Movement()
@@ -249,7 +281,7 @@ public class P1Script : MonoBehaviour
             {
                 RCharge = false;
                 Charge = false;
-                Cooldown = 60;
+                Cooldown = 30;
             }
         }
 
@@ -274,7 +306,7 @@ public class P1Script : MonoBehaviour
             {
                 LCharge = false;
                 Charge = false;
-                Cooldown = 60;
+                Cooldown = 30;
             }
         }
     }
